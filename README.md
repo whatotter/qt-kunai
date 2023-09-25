@@ -1,7 +1,25 @@
 # qt-kunai
-a badusb with a 0.98 inch OLED screen, supporting multiple payloads and mouse control, using a trinkey QT2040 (~$14 USD)
+a badusb with a 0.96 inch OLED screen, supporting multiple payloads and mouse control, using a trinkey QT2040 (~$14 USD)
 
 ***
+
+## install
+
+### BOM
+| item | price |
+| ---- | ----- |
+| [trinkey QT2040](https://www.adafruit.com/product/5056) | $8 USD |
+| [0.96in OLED](https://www.aliexpress.us/item/2251832770994631.html) | $3 USD |
+| [4pin JST-SH StemmaQT wire](https://www.aliexpress.us/item/2251832425806254.html) | $3 USD |
+| TOTAL: $14 USD |
+
+### setup
+1. solder the 4 pin JST-SH connector to the OLED screen - the pinout is [here](https://learn.adafruit.com/adafruit-trinkey-qt2040/pinouts)  
+2. connect the JST-SH connector with the OLED now attached to your QT2040
+3. flash a circuitpython .uf2 file [from here](https://circuitpython.org/board/adafruit_qt2040_trinkey/)
+4. "flash" the repository by `git clone`ing the project to your circuitpython equipped trinkey
+5. profit
+
 
 ## usage
 everything is controlled by one button (the BOOT button), as the reset button cant be used  
