@@ -15,7 +15,7 @@ a badusb with a 0.96 inch OLED screen, supporting multiple payloads and mouse co
 
 ### setup
 1. solder the 4 pin JST-SH connector to the OLED screen - the pinout is [here](https://learn.adafruit.com/adafruit-trinkey-qt2040/pinouts)  
-2. connect the JST-SH connector with the OLED now attached to your QT2040
+2. connect the now modified OLED to your QT2040
 3. flash a circuitpython .uf2 file [from here](https://circuitpython.org/board/adafruit_qt2040_trinkey/)
 4. "flash" the repository by `git clone`ing the project to your circuitpython equipped trinkey
 5. profit
