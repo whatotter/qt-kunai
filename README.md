@@ -26,7 +26,10 @@ everything is controlled by one button (the BOOT button), as the reset button ca
 
 tap once to go down one, hold for 1-2 seconds to run  
 hold 3-4 seconds to set a script to autorun on next boot  
-hold for 4+ seconds to clear the autorun
+hold for 4+ seconds to clear the autorun  
+
+to clear the autorun script w/o running anything, go into programming mode (view section below) and it'll automatically clear entering it - just press the reset button and boom
+to not run anything on start, hold the boot button about half a second to 1 second after the orangeish light flashes
 
 ## adding scripts/programming
 to program your qtkunai after it's been "flashed", you have to hold the BOOT button after it's booted (contradictory)  
