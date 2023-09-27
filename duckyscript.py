@@ -192,6 +192,7 @@ def process(line, oled, neopixel):
         oled.text(args2[-1], int(args2[0]), int(args2[1]), 1)
         oled.show()
     elif inst == 'SCNCLR':
+        if oled == None: return
         oled.fill(0)
     elif inst == 'PRESS':
         press(args[1])
@@ -210,9 +211,12 @@ def process(line, oled, neopixel):
         args2 = args[1].split(" ", 2)
         mouse.move(x=int(args2[0]), y=int(args2[1]))
     elif inst == 'GUI':
-        kbd.press(Keycode.LEFT_GUI)
-        press(args[1].upper())
-        kbd.release(Keycode.LEFT_GUI)
+        if len(args) > 1:
+            kbd.press(Keycode.LEFT_GUI)
+            press(args[1].upper())
+            kbd.release(Keycode.LEFT_GUI)
+        else:
+            press('GUI')
     elif inst == 'ALT':
         kbd.press(Keycode.ALT)
         press(args[1].upper())

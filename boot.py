@@ -15,8 +15,11 @@ if bPin.value: # depressed
     usb_cdc.disable()
     storage.remount("/", False)
 else:
+    storage.remount("/", False)
     pixels.fill((20,20,255))
     while not bPin.value:
         pass
     pixels.fill((20,255,255))
-    pass
+    with open("autorun", "w") as f:
+        f.write("")
+    storage.remount("/", True)

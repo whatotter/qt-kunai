@@ -4,15 +4,20 @@ import neopixel
 import os
 import board
 
+bPin = digitalio.DigitalInOut(board.BUTTON)
+bPin.direction = digitalio.Direction.INPUT
+bPin.pull = digitalio.Pull.UP
+
 # first script execute
 pixels = neopixel.NeoPixel(board.NEOPIXEL, 1, brightness=0.1)
 
-autorun = open("autorun", "r").read()
-if autorun in os.listdir("duckyscripts"):
-    with open('duckyscripts/{}'.format(autorun)) as file:
-        lines = file.read().splitlines()
-        for line in lines:
-            duckyscript.process(line, None, pixels)
+if bPin.value:
+    autorun = open("autorun", "r").read()
+    if autorun in os.listdir("duckyscripts"):
+        with open('duckyscripts/{}'.format(autorun)) as file:
+            lines = file.read().splitlines()
+            for line in lines:
+                duckyscript.process(line, None, pixels)
 
 import time
 import adafruit_ssd1306
@@ -20,10 +25,6 @@ import digitalio
 
 i2c = board.STEMMA_I2C()  # For using the built-in STEMMA QT connector on a microcontroller
 oled = adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
-
-bPin = digitalio.DigitalInOut(board.BUTTON)
-bPin.direction = digitalio.Direction.INPUT
-bPin.pull = digitalio.Pull.UP
 
 scripts = os.listdir("duckyscripts")
 
@@ -85,12 +86,20 @@ while True:
             with open('duckyscripts/{}'.format(scripts[slIndex])) as file:
                 lines = file.read().splitlines()
                 for line in lines:
-                    duckyscript.process(line, oled, pixels)
+                    try:
+                        duckyscript.process(line, oled, pixels)
+                    except Exception as e:
+                        with open("error", "w") as f:
+                            f.write(str(e))
     elif cycles > 25 and cycles < 45:
         pixels.fill((128,0,128))
-        with open("autorun", "w") as f:
-            f.write(scripts[slIndex])
-            f.flush()
+        try:
+            with open("autorun", "w") as f:
+                f.write(scripts[slIndex])
+                f.flush()
+        except OSError:
+            pixels.fill((255,0,0))
+            time.sleep(0.5)
         time.sleep(0.25)
         pixels.fill((0,0,0))
     elif cycles > 45:
