@@ -2,6 +2,8 @@
 a badusb with a 0.96 inch OLED screen, supporting multiple payloads and mouse control, using a trinkey QT2040 (~$14 USD)
 
 ***
+![image](https://github.com/whatotter/qt-kunai/assets/42103041/e85b9420-94cd-4e47-92a1-6723773301ad)
+***
 
 ## install
 
