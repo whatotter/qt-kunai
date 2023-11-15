@@ -1,0 +1,3 @@
+{%import random!}
+{%uid = ''.join([random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") for x in range(32)])!}
+STRINGLN the random line is {%uid#}

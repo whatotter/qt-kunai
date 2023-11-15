@@ -1,17 +1,22 @@
 import time
+import os
 import usb_hid
-import board
 from adafruit_hid.mouse import Mouse
 from adafruit_hid.keyboard import Keyboard
 from adafruit_hid.keycode import Keycode
 from adafruit_hid.keyboard_layout_us import KeyboardLayoutUS
 
-kbd = Keyboard(usb_hid.devices)
-layout = KeyboardLayoutUS(kbd)
-mouse = Mouse(usb_hid.devices)
+try:
+    kbd = Keyboard(usb_hid.devices)
+    layout = KeyboardLayoutUS(kbd)
+    mouse = Mouse(usb_hid.devices)
+except:
+    pass # usb off
 
 default_delay = 0
 previous_line = ''
+lV = {}
+gV = {}
 
 def press(k):
     if len(k) == 1:
@@ -136,8 +141,84 @@ def press(k):
         kbd.press(Keycode.F18)
     elif k == 'F19':
         kbd.press(Keycode.F19)
+        
+def dbPrint(line, end="\n"):
+    if "debug.txt" not in os.listdir():
+        f = open("debug.txt", "w")
+    else:
+        f = open("debug.txt", "a")
+        
+    f.write(line + end)
+    f.flush()
+    
+    return None
+        
+        
+def parseExec(line):
+    global gV, lV #
+    words = line.split(" ")
+    b = None
+
+    print("entered as \"{}\"".format(line))
+
+    lines = []
+    record = False
+
+    for word in words:
+        if '{%' in word or record:
+            lines.append(word.replace("{%", "").replace("%}", ""))
+            record = True
+        if '%}' in word:
+            record = False
+            parsed = "b = " + ' '.join(lines)
+
+            print("executed replace \"{}\"".format(parsed))
+
+            exec(parsed, gV)
+
+            line = line.replace("{%"+' '.join(lines)+"%}", str(lV["b"]))
+
+        elif '!}' in word:
+            record = False
+            parsed = ' '.join(lines).replace("!}", "")
+            #=xthe random line is 012345678910111213141516171819202122232425262728293031
+            #=xthe random line is 012345678910111213141516171819202122232425262728293031
+            #=xthe random line is 012345678910111213141516171819202122232425262728293031
+            #the random line is 012345678910111213141516171819202122232425262728293031
+            #
+
+            exec(parsed, gV)
+            print("executed statement \"{}\"".format(parsed))
+
+            line = line.replace("{%"+parsed+"!}", "")
+            
+
+        elif '#}' in word:
+            record = False
+            parsed = ' '.join(lines).replace("#}", "")
+            _replace = None
+
+            print("executed variable return \"{}\"".format(parsed))
+
+            exec(parsed, gV)
+
+            if parsed in list(gV):
+                _replace = gV[parsed]
+            elif parsed in list(lV):
+                _replace = lV[parsed]
+
+            line = line.replace("{%"+parsed+"#}", _replace)
+
+    print("exited as \"{}\"".format(line))
+
+
+    return line
+        
 
 def process(line, oled, neopixel):
+    line = parseExec(line)
+    if line == False:
+        return True
     args = line.split(' ', 1)
     inst = args[0]
 
