@@ -45,7 +45,7 @@ to add a duckyscript script, just put it in the `/duckyscripts` folder - it'll a
 the syntax for this is similar to duckyscript 1.0, supporting REM, STRINGLN, and some other things  
 most payloads will be supported by the qt-kunai, and if not, require basic editing  
 numbers wrapped in parenthesis must be an integer, never a string  
-
+quick reminder to remove the parenthesis when using  
 | script command  | description | usage |
 | --- | --- | --- |
 | REM | remarks/comments | `REM i am a comment` |
